@@ -64,7 +64,7 @@ function App() {
       <h1>JOB PORTAL</h1>
       <div className="row">
         <div className="col-lg-6">
-          <img src={homepage}  width="600" height="400" alt="Home Page"></img>
+          <img src={homepage} className="img-fluid" alt="Home Page"></img>
         </div>
         <div className="col-lg-6">
           <form onSubmit={handleSubmit}>
