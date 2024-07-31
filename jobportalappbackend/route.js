@@ -15,9 +15,38 @@ router.get("/", async (req, res) => {
     .status(200)
     .send(
       "<h1>Welcome This is Job Portal API</h1>  <h3>If you want to get data regarding users, use /users</h3>  <h3>If you want to send user data to database, use /register</h3> " +
-        "<h3>If you want to get user data based on specific roleType, use /users/:roleType</h3> " +
+        "<h3>If you want to send multiple users data to database, use /registerusers</h3> <h3>If you want to get user data based on specific roleType, use /users/:roleType</h3> " +
         "<h3>If you want to update user data, use /updateuser/:userName</h3> <h3>If you want to delete user data, use /deleteuser/:userName</h3>"
     );
+});
+
+//Register Multiple Users
+router.post("/registerusers", async (req, res) => {
+  let usersdata = req.body.users;
+  const createdUsers = [];
+  const errors = [];
+  try {
+    for (const userdata of usersdata) {
+      let data = await usermodelData.findOne({ userName: userdata.userName });
+      if (data == null) {
+        let user = new usermodelData(userdata);
+        console.log(user,"user")
+        try {
+          const savedUser = await user.save();
+          createdUsers.push(savedUser);
+        } catch (err) {
+          errors.push({ userdata, err: err.message });
+        }
+      }
+      else {
+        errors.push("User exists with same UserName of "+userdata.userName)
+      }
+    }
+    return res.status(201).json({ createdUsers, errors });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send(err.message);
+  }
 });
 
 //Add User Data or Register User
@@ -46,14 +75,19 @@ router.post("/login", async (req, res) => {
     let data = await usermodelData.findOne({ userName: req.body.userName });
     console.log(data);
     if (data != null) {
-      if(req.body.password === data.password && req.body.email === data.email && req.body.roleType === data.roleType) {
+      if (
+        req.body.password === data.password &&
+        req.body.email === data.email &&
+        req.body.roleType === data.roleType
+      ) {
         return res.status(200).send("Successfully Loggedin");
-      }
-      else {
-        return res.status(401).send("Trying to Login with Wrong Credentials")
+      } else {
+        return res.status(401).send("Trying to Login with Wrong Credentials");
       }
     } else {
-      return res.status(404).send("User Doesn't Exists. Please Register Yourself");
+      return res
+        .status(404)
+        .send("User Doesn't Exists. Please Register Yourself");
     }
   } catch (err) {
     console.log(err);

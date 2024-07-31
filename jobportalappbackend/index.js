@@ -18,10 +18,7 @@ app.use(authRouters)
 
 //connecting mongo
 //to ignoring warnings
-mongoose.connect(url,{
-    useNewUrlParser:true,
-    useUnifiedTopology: true
-})
+mongoose.connect(url)
 
 // connecting database
 mongoose.connection.on("connected", () => {
