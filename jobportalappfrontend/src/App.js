@@ -44,32 +44,36 @@ function App() {
 
   return (
     <div className="App">
+      <h1>JOB PORTAL</h1>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="username">USERNAME</label>
+        <label htmlFor="username">UserName</label><br></br><br></br>
         <input
           type="text"
           id="username"
           name="userName"
           value={formData.userName}
           onChange={handleChange}
-        />
-        <label htmlFor="password">PASSWORD</label>
+          placeholder="Enter UserName"
+        /><br></br><br></br>
+        <label htmlFor="password">Password</label><br></br><br></br>
         <input
           type="password"
           id="password"
           name="password"
           value={formData.password}
           onChange={handleChange}
-        />
-        <label htmlFor="email">EMAIL</label>
+          placeholder="Enter Password"
+        /><br></br><br></br>
+        <label htmlFor="email">Email</label><br></br><br></br>
         <input
-          type="text"
+          type="email"
           id="email"
           name="email"
           value={formData.email}
           onChange={handleChange}
-        />
-        <label htmlFor="roleType">ROLETYPE</label>
+          placeholder="Enter Email"
+        /><br></br><br></br>
+        <label htmlFor="roleType">Role Type</label><br></br><br></br>
         <select
           id="roleType"
           name="roleType"
@@ -80,7 +84,7 @@ function App() {
           <option value="admin">Admin</option>
           <option value="employer">Employer</option>
           <option value="jobseeker">Job Seeker</option>
-        </select>
+        </select><br></br><br></br>
         <button type="submit" name="login">
           Login
         </button>
