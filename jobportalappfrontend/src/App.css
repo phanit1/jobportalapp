@@ -1,27 +1,11 @@
 .App {
   text-align: center;
-  background-color: #38afb7;
   height: 100%;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
-}
-
-/* .img {
-  width: fit-content;
-  height: fit-content;
-} */
-
-/* .img {
-  width: 100%;
-  max-width: 300px;
-  height: auto;
-} */
-
-.form {
-  display: contents;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -42,19 +26,9 @@ label {
   color:#FFFFFF;
 }
 
-.button1 {
-  background-color: #FF6600;
-  color: #FFFFFF;
-}
-
 button {
   background-color: #FF6600;
   color: #FFFFFF;
-}
-
-form {
-  flex-direction: column;
-  margin-left: 100px;
 }
 
 .App-header {

@@ -61,11 +61,11 @@ function App() {
 
   return (
     <div className="App">
-      <h1>JOB PORTAL</h1>
+      <h1>JOB PORTAL</h1><br></br>
       <div className="row">
         <div className="col-lg-6">
           <img src={homepage} className="img-fluid" alt="Home Page"></img>
-        </div>
+        </div><br></br>
         <div className="col-lg-6">
           <form onSubmit={handleSubmit}>
             <label htmlFor="username">UserName</label>
