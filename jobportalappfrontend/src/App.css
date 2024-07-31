@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  background-color: #38afb7;
+  height: 100%;
 }
 
 .App-logo {
@@ -7,10 +9,52 @@
   pointer-events: none;
 }
 
+/* .img {
+  width: fit-content;
+  height: fit-content;
+} */
+
+.img {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+}
+
+.form {
+  display: contents;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+
+h1 {
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-style: italic;
+  font-weight: bolder;
+  color: #FFFFFF;
+}
+
+label {
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  color:#FFFFFF;
+}
+
+.button1 {
+  background-color: #FF6600;
+  color: #FFFFFF;
+}
+
+button {
+  background-color: #FF6600;
+  color: #FFFFFF;
+}
+
+form {
+  flex-direction: column;
+  margin-left: 100px;
 }
 
 .App-header {
