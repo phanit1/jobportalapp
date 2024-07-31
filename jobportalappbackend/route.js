@@ -29,7 +29,7 @@ router.post("/register", async (req, res) => {
     if (data == null) {
       let user = new usermodelData(req.body);
       await user.save();
-      return res.status(200).send("Successfully added");
+      return res.status(200).send("Successfully registered");
     } else {
       return res.status(409).send("User Already Exists with Same UserName");
     }
