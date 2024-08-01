@@ -56,6 +56,7 @@ const AdminScreen = () => {
       <br></br>
       <br></br>
       {outputData && (
+        <div class="table-responsive">
         <table className="table">
           <thead>
             <tr>
@@ -83,6 +84,7 @@ const AdminScreen = () => {
             ))}
           </tbody>
         </table>
+        </div>
       )}
 
       <button onClick={handleLogout}>Logout</button>
