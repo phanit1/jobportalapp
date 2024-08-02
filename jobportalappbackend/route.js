@@ -226,4 +226,16 @@ router.get("/jobs/:title/:companyName", async (req, res) => {
   }
 });
 
+//Get Jobs Data By Company Name
+router.get("/jobs/:companyName", async (req, res) => {
+  try {
+    var result = await jobmodelData.find({
+      companyName: req.params.companyName,
+    });
+    return res.json(result);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+});
+
 module.exports = router;
