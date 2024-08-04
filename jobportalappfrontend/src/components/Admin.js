@@ -1,8 +1,10 @@
 import { React, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const AdminScreen = () => {
   const history = useNavigate();
+  const location = useLocation();
+  const { state } = location;
   const [inputValue, setInputValue] = useState("");
   const [outputData, setOutputData] = useState([]);
   const [headers, setHeaders] = useState([]);
@@ -43,10 +45,8 @@ const AdminScreen = () => {
   };
   return (
     <div>
-      <h1>Welcome, Admin</h1>
-      <label htmlFor="roleType">Select Data to Display</label>
-      <br></br>
-      <br></br>
+      <h1>Welcome, Admin {state.data.userName}</h1>
+      <label htmlFor="roleType">Select Data to Display</label>&nbsp;&nbsp;
       <select id="data" name="data" value={inputValue} onChange={handleChange}>
         <option value="">Select Role</option>
         <option value="users">Users</option>

@@ -4,9 +4,12 @@ import homepage from "../homepage.jpg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from './AuthContext';
+
 
 function Login() {
   const history = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     userName: "",
     password: "",
@@ -42,7 +45,9 @@ function Login() {
       .then((result) => {
         if (result === "Successfully Loggedin")
           {
-            history("/" + formData.roleType);
+            localStorage.setItem('userData', JSON.stringify({ data: formData }));
+            login(formData.roleType);
+            history("/" + formData.roleType, { state: { data: formData } });
           }
           else {
             toast.info(result, {
