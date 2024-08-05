@@ -30,16 +30,15 @@ router.post("/registerusers", async (req, res) => {
       let data = await usermodelData.findOne({ userName: userdata.userName });
       if (data == null) {
         let user = new usermodelData(userdata);
-        console.log(user,"user")
+        console.log(user, "user");
         try {
           const savedUser = await user.save();
           createdUsers.push(savedUser);
         } catch (err) {
           errors.push({ userdata, err: err.message });
         }
-      }
-      else {
-        errors.push("User exists with same UserName of "+userdata.userName)
+      } else {
+        errors.push("User exists with same UserName of " + userdata.userName);
       }
     }
     return res.status(201).json({ createdUsers, errors });
@@ -75,11 +74,7 @@ router.post("/login", async (req, res) => {
     let data = await usermodelData.findOne({ userName: req.body.userName });
     console.log(data);
     if (data != null) {
-      if (
-        req.body.password === data.password &&
-        req.body.email === data.email &&
-        req.body.roleType === data.roleType
-      ) {
+      if (req.body.password === data.password) {
         return res.status(200).send("Successfully Loggedin");
       } else {
         return res.status(401).send("Trying to Login with Wrong Credentials");
