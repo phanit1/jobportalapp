@@ -4,18 +4,23 @@ import homepage from "../homepage.jpg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from './AuthContext';
-
+import { useAuth } from "./AuthContext";
 
 function Login() {
   const history = useNavigate();
   const { login } = useAuth();
+  const [isRegistering, setIsRegistering] = useState(false);
   const [formData, setFormData] = useState({
     userName: "",
+    fullName: "",
     password: "",
     email: "",
     roleType: "",
   });
+
+  const handleToggleForm = () => {
+    setIsRegistering(!isRegistering);
+  };
 
   const handleChange = (e) => {
     console.log(e.target.value);
@@ -28,28 +33,31 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const buttonType = e.nativeEvent.submitter.name;
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
     var raw = JSON.stringify(formData);
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
-    fetch(
-      "https://jobportalappbackend.vercel.app/" + buttonType,
-      requestOptions
-    )
-      .then((response) => response.text())
-      .then((result) => {
-        if (result === "Successfully Loggedin")
-          {
-            localStorage.setItem('userData', JSON.stringify({ data: formData }));
+    var rawdata = JSON.parse(raw);
+    if (buttonType === "register") {
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+      fetch(
+        "https://jobportalappbackend.vercel.app/" + buttonType,
+        requestOptions
+      )
+        .then((response) => response.text())
+        .then((result) => {
+          if (result === "Successfully Loggedin") {
+            localStorage.setItem(
+              "userData",
+              JSON.stringify({ data: formData })
+            );
             login(formData.roleType);
             history("/" + formData.roleType, { state: { data: formData } });
-          }
-          else {
+          } else {
             toast.info(result, {
               position: "top-center",
               autoClose: 3000,
@@ -59,11 +67,66 @@ function Login() {
               draggable: true,
               progress: undefined,
               theme: "colored",
-            })
+            });
           }
-      })
-      .catch((error) => alert("error", error));
-    console.log("Form Data:", formData);
+        })
+        .catch((error) => alert("error", error));
+      console.log("Form Data:", formData);
+    } else {
+      console.log(buttonType);
+      console.log(raw, "raw data");
+      var requestOptions1 = {
+        method: "GET",
+        redirect: "follow",
+      };
+
+      fetch(
+        "https://jobportalappbackend.vercel.app/users/" + formData.userName,
+        requestOptions1
+      )
+        .then((response) => response.text())
+        .then((result) => {
+          let resultdata = JSON.parse(result)[0];
+          if (
+            resultdata.userName === rawdata.userName &&
+            resultdata.password === rawdata.password
+          ) {
+            console.log(resultdata);
+            localStorage.setItem(
+              "userData",
+              JSON.stringify({ data: resultdata })
+            );
+            login(resultdata.roleType);
+            history("/" + resultdata.roleType, { state: { data: resultdata } });
+          } else if (
+            resultdata.userName === rawdata.userName &&
+            resultdata.password !== rawdata.password
+          ) {
+            toast.info("Trying to Enter Wrong Credentials", {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+          }
+        })
+        .catch((error) => {
+          toast.info("Getting Error. Please Check Credentials"+error, {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        });
+    }
     // setFormData({
     //   username: "",
     //   password: "",
@@ -85,70 +148,107 @@ function Login() {
         </div>
         <br></br>
         <div className="col-lg-6">
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="username">UserName</label>
-            <br></br>
-            <br></br>
-            <input
-              type="text"
-              id="username"
-              name="userName"
-              value={formData.userName}
-              onChange={handleChange}
-              placeholder="Enter UserName"
-            />
-            <br></br>
-            <br></br>
-            <label htmlFor="password">Password</label>
-            <br></br>
-            <br></br>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Enter Password"
-            />
-            <br></br>
-            <br></br>
-            <label htmlFor="email">Email</label>
-            <br></br>
-            <br></br>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter Email"
-            />
-            <br></br>
-            <br></br>
-            <label htmlFor="roleType">Role Type</label>
-            <br></br>
-            <br></br>
-            <select
-              id="roleType"
-              name="roleType"
-              value={formData.roleType}
-              onChange={handleChange}
-            >
-              <option value="">Select Role</option>
-              <option value="admin">Admin</option>
-              <option value="employer">Employer</option>
-              <option value="jobseeker">Job Seeker</option>
-            </select>
-            <br></br>
-            <br></br>
-            <button type="submit" name="login">
-              Login
-            </button>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <button type="submit" name="register">
-              Register
-            </button>
-          </form>
+          {!isRegistering ? (
+            <div className="form-container">
+              <p className="title">Welcome back</p>
+              <form className="form" onSubmit={handleSubmit}>
+                <input
+                  type="text"
+                  id="username"
+                  name="userName"
+                  className="input"
+                  placeholder="UserName"
+                  value={formData.userName}
+                  onChange={handleChange}
+                />
+                <input
+                  type="password"
+                  className="input"
+                  placeholder="Password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+                <button className="form-btn" name="login" type="submit">
+                  Log in
+                </button>
+              </form>
+              <p className="sign-up-label">
+                Don't have an account?
+                <span className="sign-up-link" onClick={handleToggleForm}>
+                  Sign up
+                </span>
+              </p>
+            </div>
+          ) : (
+            <div className="form-container">
+              <p className="title">Welcome back</p>
+              <form className="form" onSubmit={handleSubmit}>
+                <input
+                  type="text"
+                  id="username"
+                  name="userName"
+                  className="input"
+                  placeholder="UserName"
+                  value={formData.userName}
+                  onChange={handleChange}
+                />
+                <div className="flex">
+                  <input
+                    type="text"
+                    id="fullname"
+                    name="fullName"
+                    className="input"
+                    placeholder="FullName"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                  />
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    className="input"
+                    placeholder="Email"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+                </div>
+                <input
+                  type="password"
+                  className="input"
+                  placeholder="Password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+                <select
+                  id="roleType"
+                  className="input"
+                  name="roleType"
+                  value={formData.roleType}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Role</option>
+                  <option value="employer">Employer</option>
+                  <option value="jobseeker">Job Seeker</option>
+                </select>
+                {/* <p className="page-link">
+                <span className="page-link-label">Forgot Password?</span>
+              </p> */}
+                <button className="form-btn" name="register" type="submit">
+                  Register
+                </button>
+              </form>
+              <p className="sign-up-label">
+                Having an account?
+                <span className="sign-up-link" onClick={handleToggleForm}>
+                  Login
+                </span>
+              </p>
+            </div>
+          )}
         </div>
         <ToastContainer
           position="top-center"
