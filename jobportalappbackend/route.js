@@ -100,6 +100,15 @@ router.get("/users", async (req, res) => {
   }
 });
 
+//Get User Data
+router.get("/users/:userName", async (req, res) => {
+  try {
+    var result = await usermodelData.find({ userName: req.params.userName });
+    return res.json(result);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+});
 //Get User Data by roleType
 router.get("/users/:roleType", async (req, res) => {
   try {
