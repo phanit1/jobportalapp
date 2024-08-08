@@ -194,7 +194,6 @@ function Login() {
                   value={formData.userName}
                   onChange={handleChange}
                 />
-                <div className="flex">
                   <input
                     type="text"
                     id="fullname"
@@ -213,7 +212,6 @@ function Login() {
                     value={formData.email}
                     onChange={handleChange}
                   />
-                </div>
                 <input
                   type="password"
                   className="input"
