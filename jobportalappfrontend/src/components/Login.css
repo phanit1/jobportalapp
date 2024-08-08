@@ -12,6 +12,9 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+  .title {
+    margin: -10px 0 10px 0;
+  }
 }
 
 h1 {
@@ -84,7 +87,7 @@ button {
   text-align: center;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
         "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-  margin: 10px 0 20px 0;
+  margin: -40px 0 10px 0;
   font-size: 28px;
   font-weight: 800;
 }
@@ -160,4 +163,10 @@ button {
   font-weight: 800;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
         "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+@media (max-width:400px) {
+  .title {
+    margin: 10px 0 10px 0;
+  }
 }
